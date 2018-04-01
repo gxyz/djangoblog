@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block main %}
+    <h1>{{ welcome }}</h1>
+    {% for post in post_list %}
+        <article>
+            <h1 class="entry-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </h1>
+            <div class="entry-meta">
+                <span class="post-category">{{ post.category.name }}</span>
+                <span class="post-date">{{ post.created_time }}</span>
+                <span class="post-author">{{ post.author }}</span>
+                <span class="comments">4 评论</span>
+                <span class="views-count">588 阅读</span>
+            </div>
+            <div class="entry-content">
+                <p>{{ post.excerpt }}</p>
+                <a href="{{ post.get_absolute_url }}" class="read-more">继续阅读</a>
+            </div>
+        </article>
+    {% empty %}
+        <div>暂时还没有发布文章！</div>
+    {% endfor %}
+{% endblock main %}
