@@ -7,9 +7,54 @@
         {% endblock title %}
     </title>
     {% load static %}
+    {% load blog_tags %}
     <link rel="stylesheet" href="{% static 'blog/highlights/default.css' %}">
 </head>
 <body>
+    <nav class="nav">
+        <h1>
+            <a href="{% url 'blog:index' %}">Home</a>
+        </h1>
+    </nav>
+    <section class="recent-post">
+        <h3 class="siderbar-title">最新文章</h3>
+        {% get_recent_posts as recent_post_list  %}
+        <ul>
+            {% for post in recent_post_list %}
+                <li>
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </li>
+            {% empty %}
+                暂无文章!
+            {% endfor %}
+        </ul>
+    </section>
+    <section class="post-archives">
+        <h3 class="siderbar-title">文章归档</h3>
+        {% archives as date_list %}
+        <ul>
+            {% for date in date_list %}
+                <li>
+                    <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
+                </li>
+            {% empty %}
+                暂无归档!
+            {% endfor %}
+        </ul>
+    </section>
+    <section class="post-category">
+        <h3 class="siderbar-title">文章分类</h3>
+        {% get_categories as category_list %}
+        <ul>
+            {% for category in category_list %}
+                <li>
+                    <a href="{% url 'blog:category' category.pk %}">{{ category.name }} <span class="post-count">({{ category.post_set.count }})</span></a>
+                </li>
+            {% empty %}
+                暂无分类!
+            {% endfor %}
+        </ul>
+    </section>
     {% block main %}
     {% endblock main %}
 

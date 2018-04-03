@@ -30,8 +30,44 @@
                 {{ post.body | safe }}
         </div>
     </article>
-    <section class="comment-area">
-        
+    <section id="comment-area">
+        <h3>
+            评论列表
+        </h3>
+        <form action="{% url 'comments:post_comment' post.pk %}" method="post" class="comment-form">
+            {% csrf_token %}
+            <label for="{{ form.name.id_for_label }}">名字：</label>
+            {{ form.name }}
+            {{ form.name.errors }}
+
+            <label for="{{ form.email.id_for_label }}">邮箱：</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+
+            <label for="{{ form.url.id_for_label }}">URL：</label>
+            {{ form.url }}
+            {{ form.url.errors }}
+
+            <label for="{{ form.text.id_for_label }}">评论：</label>
+            {{ form.text }}
+            {{ form.text.errors }}
+
+            <button type="submit" class="comment-btn">发表</button>
+        </form>
+
+        <ul class="comment-list">
+            {% for comment in comment_list %}
+                <li class="comment-item">
+                    <span class="comment-author">{{ comment.name }}</span>
+                    <time class="comment-date">{{ comment.created_time }}</time>
+                    <div class="comment-text">
+                        {{ comment.text }}
+                    </div>
+                </li>
+            {% empty %}
+                暂无评论!
+            {% endfor %}
+        </ul>
     </section>
 {% endblock main %}
 {% block toc %}
